@@ -5,6 +5,7 @@ const express = require('express');
 //We assign express() to the app variable so that we can later chain on methods to the Express.js server
 const app = express();
 
+//instead of handling the filter functionality inside the .get() callback, we're going to break it out into its own function
 function filterByQuery(query, animalsArray) {
     let filteredResults = animalsArray;
     if (query.diet) {
@@ -19,11 +20,13 @@ function filterByQuery(query, animalsArray) {
     return filteredResults;
   }
 
-app.get('/api/animals', (req, res) => {
+  app.get('/api/animals', (req, res) => {
     let results = animals;
-    console.log(req.query)
+    if (req.query) {
+      results = filterByQuery(req.query, results);
+    }
     res.json(results);
-});
+  });
 // The port is like a building/classroom; it gives the exact desination on the host
 app.listen(3001, () => {
     console.log(`API server now on port 3001`);
