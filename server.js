@@ -31,6 +31,7 @@ function filterByQuery(query, animalsArray) {
         filteredResults = filteredResults.filter(
           animal => animal.personalityTraits.indexOf(trait) !== -1
         );
+        // Each iteration revises filteredResults so that it only contains animals that possess the indicated trait. At the end of the .forEach() loop, we'll have a filteredResults array that only contains animals that have all of the traits we're targeting
       });
     }
     if (query.diet) {
