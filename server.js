@@ -8,7 +8,9 @@ const app = express();
 
 
 app.get('/api/animals', (req, res) => {
-    res.send(animals);
+    let results = animals;
+    console.log(req.query)
+    res.json(results);
 });
 // The port is like a building/classroom; it gives the exact desination on the host
 app.listen(3001, () => {
