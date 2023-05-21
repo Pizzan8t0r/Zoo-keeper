@@ -59,9 +59,16 @@ function findById(id, animalsArray) {
     res.json(results);
   });
   //new GET route for animals
+  // if no record exists for the animal being searched for, the client receives a 404 erro
   app.get('/api/animals/:id', (req, res) => {
     const result = findById(req.params.id, animals);
+    if (result) {
       res.json(result);
+    } else {
+      // the 404 status code is meant to communicate to the client that the requested resource could not be found
+      // return an error instead of an empty object or undefined in order to make it clear to the client that the resource they asked for, in this case a specific animal, does not exis
+      res.send(404);
+    }
   });
 // The port is like a building/classroom; it gives the exact desination on the host
 app.listen(PORT, () => {
