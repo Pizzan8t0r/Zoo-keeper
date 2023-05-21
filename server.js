@@ -8,6 +8,8 @@ const PORT = process.env.PORT || 3001;
 //instantiate the server
 //We assign express() to the app variable so that we can later chain on methods to the Express.js server
 const app = express();
+// Express.js middleware that instructs the server to make certain files readily available and to not gate it behind a server endpoint.
+app.use(express.static('public'));
 // parse incoming string or array data
 // getting the server to read the data properly
 app.use(express.urlencoded({ extended: true }));
@@ -119,6 +121,11 @@ function validateAnimal(animal) {
       const animal = createNewAnimal(req.body, animals);
       res.json(animal);
     }
+  });
+  // index.html served from our Express.js server
+  // '/' brings us to the root route of the server
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
   });
 // The port is like a building/classroom; it gives the exact desination on the host
 app.listen(PORT, () => {
