@@ -1,3 +1,6 @@
+const fs = require('fs');
+// path provides utilities for working with file and directory paths
+const path = require('path');
 // a route that the front-end can request data from
 const { animals } = require('./data/animals.json');
 const express = require('express');
@@ -6,6 +9,7 @@ const PORT = process.env.PORT || 3001;
 //We assign express() to the app variable so that we can later chain on methods to the Express.js server
 const app = express();
 // parse incoming string or array data
+// getting the server to read the data properly
 app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data
 app.use(express.json());
@@ -56,11 +60,30 @@ function findById(id, animalsArray) {
 }
 // separate function that handles taking the data from req.body and adds it to the animals.json file
 function createNewAnimal(body, animalsArray) {
-  console.log(body);
-  // our function's main code will go here!
-
-  // return finished code to post route for response
-  return body;
+  const animal = body;
+  animalsArray.push(animal);
+  fs.writeFileSync(
+    path.join(__dirname, './data/animals.json'),
+    // saves the JavaScript array data as JSON, we use JSON.stringify() to convert it
+    // 2 indicates we want to create white space between our values to make it more readable
+    JSON.stringify({ animals: animalsArray }, null, 2)
+  );
+  return animal;
+}
+function validateAnimal(animal) {
+  if (!animal.name || typeof animal.name !== 'string') {
+    return false;
+  }
+  if (!animal.species || typeof animal.species !== 'string') {
+    return false;
+  }
+  if (!animal.diet || typeof animal.diet !== 'string') {
+    return false;
+  }
+  if (!animal.personalityTraits || !Array.isArray(animal.personalityTraits)) {
+    return false;
+  }
+  return true;
 }
   app.get('/api/animals', (req, res) => {
     let results = animals;
@@ -82,14 +105,20 @@ function createNewAnimal(body, animalsArray) {
     }
   });
   // sets up a route on our server that accepts data to be used or stored server-side
+  //  post route's callback sends the updated req.body data to createNewAnimal()
+  // our POST route's callback before we create the data and add it to the catalog, we'll pass our data through this function. 
+  // In this case, the animal parameter is going to be the content from req.body, and we're going to run its properties through a series of validation checks. If any of them are false, we will return false and not create the animal data.
   app.post('/api/animals', (req, res) => {
     // set id based on what the next index of the array will be
     req.body.id = animals.length.toString();
   
-    // add animal to json file and animals array in this function
-    const animal = createNewAnimal(req.body, animals);
-  
-    res.json(animal);
+    // if any data in req.body is incorrect, send 400 error back
+    if (!validateAnimal(req.body)) {
+      res.status(400).send('The animal is not properly formatted.');
+    } else {
+      const animal = createNewAnimal(req.body, animals);
+      res.json(animal);
+    }
   });
 // The port is like a building/classroom; it gives the exact desination on the host
 app.listen(PORT, () => {
