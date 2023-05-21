@@ -5,7 +5,10 @@ const PORT = process.env.PORT || 3001;
 //instantiate the server
 //We assign express() to the app variable so that we can later chain on methods to the Express.js server
 const app = express();
-
+// parse incoming string or array data
+app.use(express.urlencoded({ extended: true }));
+// parse incoming JSON data
+app.use(express.json());
 //instead of handling the filter functionality inside the .get() callback, we're going to break it out into its own function
 // filters animals by multiple personality traits at the same time
 function filterByQuery(query, animalsArray) {
@@ -69,6 +72,12 @@ function findById(id, animalsArray) {
       // return an error instead of an empty object or undefined in order to make it clear to the client that the resource they asked for, in this case a specific animal, does not exis
       res.send(404);
     }
+  });
+  // sets up a route on our server that accepts data to be used or stored server-side
+  app.post('/api/animals', (req, res) => {
+     // req.body is where our incoming content will be
+  console.log(req.body);
+  res.json(req.body);
   });
 // The port is like a building/classroom; it gives the exact desination on the host
 app.listen(PORT, () => {
