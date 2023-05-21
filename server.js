@@ -86,7 +86,10 @@ function createNewAnimal(body, animalsArray) {
     // set id based on what the next index of the array will be
     req.body.id = animals.length.toString();
   
-    res.json(req.body);
+    // add animal to json file and animals array in this function
+    const animal = createNewAnimal(req.body, animals);
+  
+    res.json(animal);
   });
 // The port is like a building/classroom; it gives the exact desination on the host
 app.listen(PORT, () => {
