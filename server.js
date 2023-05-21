@@ -54,6 +54,14 @@ function findById(id, animalsArray) {
   const result = animalsArray.filter(animal => animal.id === id)[0];
   return result;
 }
+// separate function that handles taking the data from req.body and adds it to the animals.json file
+function createNewAnimal(body, animalsArray) {
+  console.log(body);
+  // our function's main code will go here!
+
+  // return finished code to post route for response
+  return body;
+}
   app.get('/api/animals', (req, res) => {
     let results = animals;
     if (req.query) {
@@ -75,9 +83,10 @@ function findById(id, animalsArray) {
   });
   // sets up a route on our server that accepts data to be used or stored server-side
   app.post('/api/animals', (req, res) => {
-     // req.body is where our incoming content will be
-  console.log(req.body);
-  res.json(req.body);
+    // set id based on what the next index of the array will be
+    req.body.id = animals.length.toString();
+  
+    res.json(req.body);
   });
 // The port is like a building/classroom; it gives the exact desination on the host
 app.listen(PORT, () => {
