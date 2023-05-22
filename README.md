@@ -1,6 +1,4 @@
 # Zoo-keeper
-
-##
 The scenario: the local zoo has received funding to build a new online catalog, and they've asked me to create a web server for a front-end application they’re developing, called Zoo Keepr. This site’s data will be stored on the server I create. This will allow animal enthusiasts to access the data from different locations and browsers without needing to download it to their device.
 ![300-zookeepr-home](https://github.com/Pizzan8t0r/Zoo-keeper/assets/131811220/8e3c3e24-6edb-405a-8f32-54893e9351af)
 
@@ -44,3 +42,5 @@ The animal.html file allows users to see all of the animal data from our server.
 These JavaScript files have all of the main functionality handled when it comes to capturing form data and printing it to the page.
 By completing this web application I’ve expanded on my knowledge of modularizing applications and successfully separated the server logic from the routes.
 Now I can confidently set up an Express.js server that serves HTML and JSON to a client.
+## Deployment:
+https://rocky-badlands-81041.herokuapp.com/
